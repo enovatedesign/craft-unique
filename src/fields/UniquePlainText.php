@@ -43,8 +43,10 @@ class UniquePlainText extends PlainText
     {
         return [[
             $this->handle, function ($attribute, $params) {
-                if (Entry::find()->{$this->handle}($attribute->{$this->handle})->one()) {
-                    $attribute->addError($this->handle, "This must be unique.");
+                if ($entry = Entry::find()->{$this->handle}($attribute->{$this->handle})->one()) {
+                    if ($entry['id'] !== $attribute['id']) {
+                        $attribute->addError($this->handle, "This must be unique.");
+                    }
                 }
             }
         ]];
